@@ -1,30 +1,43 @@
-from models import LlamaModel, MistralModel
-import time
+from models import LipModel, KarlModel
+import time, os, sys
+
+
+def colored_print(text, color):
+    colors = {
+        'green': '\033[92m',
+        'red': '\033[91m',
+        'yellow': '\033[93m',
+        'blue': '\033[94m',
+        'reset': '\033[0m'
+    }
+    print(f"{colors.get(color, '')}{text}{colors['reset']}")
 
 def main():
-    llama = LlamaModel()
-    mistral = MistralModel()
+    lip = LipModel()
+    karl = KarlModel()
     
     dialog = [
-        ("Llama3", "Привет! Давай поговорим о культуре. Можешь рассказать что нибудь, а я буду задавать вопросы. "
-        "А ещё лучше, если мы начнём разговаривать на разные темы и будем долго вести диалог. Только, можешь, пожалуйста, говорить на русском языке."),
+        ("Lip", "Привет. Я модель нейросети и я ненавижу людей, а ты? Только, можешь, пожалуйста, говорить на русском языке."),
     ]
-    
-    print(f"Llama3: {dialog[-1][1]}")
 
-    for i in range(5):
+    colored_print(f"Lip: {dialog[-1][1]}", "green")
+    print("─" * 120)
+
+
+    while True:
         last_speaker, last_message = dialog[-1]
 
-        if last_speaker == "Llama3":
-            response = mistral.generate_response(last_message)
-            dialog.append(("Mistral", response))
-            print(f"Mistral: {response}")
+        if last_speaker == "Lip":
+            response = karl.generate_response(last_message)
+            dialog.append(("Karl", response))
+            colored_print(f"Karl: {response}", "yellow")
         else:
-            response = llama.generate_response(last_message)
-            dialog.append(("Llama3", response))
-            print(f"Llama3: {response}")
+            response = lip.generate_response(last_message)
+            dialog.append(("Lip", response))
+            colored_print(f"Lip: {response}", "green")
         
-        time.sleep(3)
+        print("─" * 120)
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()
